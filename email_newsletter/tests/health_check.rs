@@ -1,7 +1,9 @@
 use email_newsletter::configuration::{get_configuration, DatabaseSettings};
 use email_newsletter::startup::run;
+use email_newsletter::telemetry::{get_subscriber, init_subscriber};
+use once_cell::sync::Lazy;
 use sqlx::{Connection, Executor, PgConnection, PgPool};
-
+use std::io::{sink, stdout};
 use std::net::TcpListener;
 use uuid::Uuid;
 
@@ -10,7 +12,22 @@ pub struct TestApp {
 	pub db_pool: PgPool,
 }
 
+static TRACING: Lazy<()> = Lazy::new(|| {
+	let default_filter_level = "info".to_string();
+	let subscriber_name = "test".to_string();
+
+	if std::env::var("TEST_LOG").is_ok() {
+		let subscriber = get_subscriber(subscriber_name, default_filter_level, stdout);
+		init_subscriber(subscriber);
+	} else {
+		let subscriber = get_subscriber(subscriber_name, default_filter_level, sink);
+		init_subscriber(subscriber);
+	}
+});
+
 pub async fn configure_database(config: &DatabaseSettings) -> PgPool {
+	Lazy::force(&TRACING);
+
 	// create database
 	let mut connection = PgConnection::connect(&config.connection_string_without_db())
 		.await
