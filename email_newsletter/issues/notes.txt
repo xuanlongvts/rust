@@ -2,3 +2,6 @@ https://stackoverflow.com/questions/15301826/psql-fatal-role-postgres-does-not-e
 
 psql postgres
 CREATE USER postgres SUPERUSER;
+
+
+build docker: docker build --tag email_newsletter --file Dockerfile .
