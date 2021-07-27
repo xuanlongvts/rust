@@ -1,3 +1,5 @@
 1. Cargo 
 2. Actix-web
 3. Tokio
+4. Structer for 4 Env (dev, qc, uat, production)
+5. Log file flow year/month folders

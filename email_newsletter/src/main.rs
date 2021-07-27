@@ -12,7 +12,7 @@ async fn main() -> std::io::Result<()> {
 	let get_configuration = get_configuration().expect("Failed to bind address");
 	let connection_pool = PgPoolOptions::new()
 		.connect_timeout(std::time::Duration::from_secs(2))
-		.connect(&get_configuration.database.connection_string())
+		.connect_with(get_configuration.database.with_db())
 		.await
 		.expect("Failed to connect to Postgres.");
 
