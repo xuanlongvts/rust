@@ -3,11 +3,23 @@ use chrono::Utc;
 use sqlx::PgPool;
 use uuid::Uuid;
 use crate::domain::{NewSubscriber, SubscriberName, SubscriberEmail};
+use std::convert::TryInto;
 
 #[derive(serde::Deserialize)]
 pub struct FormData {
 	email: String,
 	name: String,
+}
+
+impl TryInto<NewSubscriber> for FormData {
+	type Error = String;
+
+	fn try_into(self) -> Result<NewSubscriber, Self::Error> {
+		let name = SubscriberName::parse(self.name)?;
+		let email = SubscriberEmail::parse(self.email)?;
+
+		Ok(NewSubscriber {email, name})
+	}
 }
 
 #[tracing::instrument(
@@ -16,17 +28,9 @@ pub struct FormData {
 	fields(email = %form.email, name = %form.name)
 )]
 pub async fn subscriber(form: web::Form<FormData>, pool: web::Data<PgPool>) -> HttpResponse {
-	let name = match SubscriberName::parse(form.0.name) {
-		Ok(name) => name,
-		Err(_) => return HttpResponse::BadRequest().finish(),
-	};
-	let email = match SubscriberEmail::parse(form.0.email) {
+	let new_subscriber = match form.0.try_into() {
 		Ok(email) => email,
 		Err(_) => return HttpResponse::BadRequest().finish()
-	};
-	let new_subscriber = NewSubscriber {
-		email,
-		name
 	};
 	match insert_subscribe(&pool, &new_subscriber).await {
 		Ok(_) => HttpResponse::Ok().finish(),
