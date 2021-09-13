@@ -29,7 +29,7 @@ impl TryInto<NewSubscriber> for FormData {
 )]
 pub async fn subscriber(form: web::Form<FormData>, pool: web::Data<PgPool>) -> HttpResponse {
 	let new_subscriber = match form.0.try_into() {
-		Ok(email) => email,
+		Ok(data) => data,
 		Err(_) => return HttpResponse::BadRequest().finish()
 	};
 	match insert_subscribe(&pool, &new_subscriber).await {
