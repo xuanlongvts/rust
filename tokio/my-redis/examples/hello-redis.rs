@@ -26,13 +26,14 @@ async fn process(socket: TcpStream) {
 	while let Some(frame) = connection.read_frame().await.unwrap() {
 		let res = match Command::from_frame(frame).unwrap() {
 			Set(cmd) => {
-				println!("cmd: {:#?}", cmd);
+				println!("set cmd: {:#?}", cmd);
 				// The value is stored as `Vec<u8>`
 				db.insert(cmd.key().to_string(), cmd.value().to_vec());
 				Frame::Simple("OK".to_string())
 			}
 			Get(cmd) => {
 				if let Some(value) = db.get(cmd.key()) {
+					println!("get value: {:?}", value.clone());
 					Frame::Bulk(value.clone().into())
 				} else {
 					Frame::Null
