@@ -1,5 +1,5 @@
 [package]
-name = "_05_complex_number"
+name = "_10_mandelbrot"
 version = "0.1.0"
 edition = "2018"
 
