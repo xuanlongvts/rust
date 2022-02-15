@@ -321,3 +321,7 @@ fn main() {
         _ => unreachable!(),
     }
 }
+
+// sudo cargo run get
+// sudo cargo run get
+// sudo cargo run get -s timestamp
