@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 arrayref = "0.3.6"
 config = "0.13.1"
+serde = "1.0.137"

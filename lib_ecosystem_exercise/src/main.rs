@@ -9,5 +9,6 @@ fn main() {
 
     // config lib
     println!("---------> 2. config");
-    _2_config::main();
+    _2_config::_1_simple();
+    _2_config::_2_env_list();
 }

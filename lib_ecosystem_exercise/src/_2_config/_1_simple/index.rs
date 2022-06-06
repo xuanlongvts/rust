@@ -1,7 +1,7 @@
 use config::{Config, Environment, File};
 use std::collections::HashMap;
 
-pub fn main() {
+pub fn _1_simple() {
 	let settings = Config::builder()
 		.add_source(File::with_name("src/_2_config/_1_simple/Settings"))
 		.add_source(Environment::with_prefix("APP"))
