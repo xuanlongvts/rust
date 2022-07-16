@@ -8,4 +8,7 @@ edition = "2021"
 [dependencies]
 arrayref = "0.3.6"
 config = "0.13.1"
+hex = "0.4.3"
+hmac = "0.12.1"
+secrets = "1.2.0"
 serde = "1.0.137"
