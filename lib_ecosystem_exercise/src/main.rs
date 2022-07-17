@@ -1,6 +1,7 @@
 mod _1_arrayref;
 mod _2_config;
 mod _3_hex;
+mod _4_hmac;
 
 fn main() {
     println!("---------> 1. arrayref");
@@ -16,4 +17,8 @@ fn main() {
     _3_hex::encode_fn();
     _3_hex::decode_fn();
     _3_hex::encode_upper_fn();
+
+    println!("---------> 4. hmac");
+    _4_hmac::_1_anatomy_fun();
+    _4_hmac::_2_verify_slice_fun();
 }
